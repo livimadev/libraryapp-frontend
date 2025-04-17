@@ -1,0 +1,7 @@
+<h1>Lista de editoriales</h1>
+
+<ul>
+    @for(p of publishers; track $index){
+        <li>Nombre: {{p.name}} - Dirección: {{ p.address}}</li>
+    }
+</ul>
