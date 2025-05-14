@@ -87,3 +87,8 @@ Generar los archivos del environment
 ```bash
 ng generate environments
 ```
+Generar un archivo de centralización de las importaciones
+
+```bash
+ng generate module material
+```
