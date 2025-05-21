@@ -14,4 +14,21 @@ export class PublisherService {
   findAll(){
     return this.http.get<Publisher[]>(this.url);
   }
+
+  findById(id: number){
+    return this.http.get<Publisher>(`${this.url}/${id}`);
+  }
+
+  save(publisher: Publisher){
+    return this.http.post(this.url, publisher);
+  }
+
+  update(id: number, publisher: Publisher){
+    return this.http.put(`${this.url}/${id}`, publisher);
+  }
+
+  delete(id: number){
+    return this.http.delete(`${this.url}/${id}`);
+  }
+
 }

@@ -1,19 +1,31 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { PublisherService } from '../../services/publisher.service';
 import { Publisher } from '../../model/publisher';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-publisher',
-  imports: [MatTableModule, MatIconModule, MatIconModule, MatFormFieldModule, MatInputModule, 
-    MatPaginatorModule, MatSortModule],
+  imports: [
+    MatTableModule,
+    MatIconModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    RouterOutlet,
+    RouterLink
+  ],
   templateUrl: './publisher.component.html',
-  styleUrl: './publisher.component.css'
+  styleUrl: './publisher.component.css',
 })
 export class PublisherComponent {
   //displayedColumns: string[] = ['idPublisher', 'name', 'address'];
@@ -32,21 +44,21 @@ export class PublisherComponent {
   //constructor(private publisherService: PublisherService){}
   publisherService = inject(PublisherService);
 
-  ngOnInit():void{
+  ngOnInit(): void {
     // this.publisherService.findAll().subscribe(data => console.log(data));
     // this.publisherService.findAll().subscribe(data => this.publishers = data);
-    this.publisherService.findAll().subscribe(data => {
+    this.publisherService.findAll().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-  getDisplayedColumns(){
-    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+  getDisplayedColumns() {
+    return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
-  applyFilter(e: any){
+  applyFilter(e: any) {
     this.dataSource.filter = e.target.value.trim();
   }
 }
