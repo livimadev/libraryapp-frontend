@@ -9,6 +9,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-publisher',
@@ -41,18 +43,33 @@ export class PublisherComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  //constructor(private publisherService: PublisherService){}
-  publisherService = inject(PublisherService);
+  constructor(
+    private publisherService: PublisherService,
+    private _snackBar: MatSnackBar
+  ){}
+  //publisherService = inject(PublisherService);
 
   ngOnInit(): void {
     // this.publisherService.findAll().subscribe(data => console.log(data));
     // this.publisherService.findAll().subscribe(data => this.publishers = data);
     this.publisherService.findAll().subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.createTable(data);
     });
+
+    this.publisherService.getPublisherChange().subscribe(data => this.createTable(data));
+  
+   // this._snackBar.open('sample message','INFO', {duration: 2000, horizontalPosition: 'right', verticalPosition:'bottom'});
+   this.publisherService.getMessageChange().subscribe(
+    data => this._snackBar.open(data,'INFO', {duration: 2000, horizontalPosition: 'right', verticalPosition:'bottom'})
+   );
   }
+
+  createTable(data: Publisher[]){
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
 
   getDisplayedColumns() {
     return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
@@ -60,5 +77,14 @@ export class PublisherComponent {
 
   applyFilter(e: any) {
     this.dataSource.filter = e.target.value.trim();
+  }
+
+  delete(id: number){
+    this.publisherService.delete(id)
+      .pipe(switchMap( () => this.publisherService.findAll()))
+      .subscribe( data => {
+        this.publisherService.setPublisherChange(data);
+        this.publisherService.setMessageChange('DELETED!');
+      });
   }
 }
