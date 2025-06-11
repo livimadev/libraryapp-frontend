@@ -1,16 +1,14 @@
 import { Routes } from '@angular/router';
-import { PublisherComponent } from './pages/publisher/publisher.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { PublisherEditComponent } from './pages/publisher/publisher-edit/publisher-edit.component';
+import { LoginComponent } from './pages/login/login.component';
+import { LayoutComponent } from './pages/layout/layout.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: 'login', component: LoginComponent},
   {
-    path: 'pages/publisher',
-    component: PublisherComponent,
-    children: [
-      { path: 'new', component: PublisherEditComponent }, // pages/publisher/new
-      { path: 'edit/:id', component: PublisherEditComponent }, // pages/publisher/edit/1
-    ],
-  },
-  { path: 'pages/category', component: CategoryComponent },
+    path:'pages', component: LayoutComponent,
+    loadChildren: () => 
+                    import('./pages/pages.routes')
+                    .then((x) => x.pagesRoutes)
+  }
 ];

@@ -5,8 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PublisherService } from '../../../services/publisher.service';
 import { Publisher } from '../../../model/publisher';
+import { PublisherService } from '../../../services/publisher.service';
 import { switchMap } from 'rxjs';
 
 @Component({
@@ -14,13 +14,13 @@ import { switchMap } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    RouterLink,
+    RouterLink
   ],
   templateUrl: './publisher-edit.component.html',
-  styleUrl: './publisher-edit.component.css',
+  styleUrl: './publisher-edit.component.css'
 })
 export class PublisherEditComponent {
   form: FormGroup;
@@ -28,38 +28,40 @@ export class PublisherEditComponent {
   isEdit: boolean;
 
   constructor(
-    private route: ActivatedRoute, // ruta activa
+    private route: ActivatedRoute, // para saber la ruta aciva
     private publisherService: PublisherService,
-    private router: Router //no permite movernos de una página a otra
-  ) {}
+    private router: Router // me permite moverme de una página a otra
+  ){}
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.form = new FormGroup({
-      idPublisher: new FormControl(), // DECIA 0, pero generaba conflicto de transient value
-      address: new FormControl(''),
-      name: new FormControl(''),
+      idPublisher: new FormControl(),
+      address: new FormControl(),
+      name: new FormControl()
     });
 
-    this.route.params.subscribe((data) => {
+    this.route.params.subscribe( data => {
       this.id = data['id'];
       this.isEdit = data['id'] != null;
+      // cargar el formulario con los datos recuperados
       this.initForm();
     });
   }
 
-  initForm() {
-    if (this.isEdit) {
-      this.publisherService.findById(this.id).subscribe((data) => {
+  // Para cargar un formulario para edición
+  initForm(){
+    if(this.isEdit){
+      this.publisherService.findById(this.id).subscribe( (data) => {
         this.form = new FormGroup({
           idPublisher: new FormControl(data.idPublisher),
           name: new FormControl(data.name),
-          address: new FormControl(data.address),
+          address: new FormControl(data.address)
         });
       });
     }
   }
 
-  operate() {
+  operate(){
     // console.log("operate!");
     const publisher: Publisher = new Publisher();
     publisher.idPublisher = this.form.value['idPublisher'];
@@ -68,32 +70,29 @@ export class PublisherEditComponent {
     publisher.name = this.form.value['name'];
     publisher.address = this.form.value['address'];
 
-    if (this.isEdit) {
-      //EDIT
+    if(this.isEdit){
+      // EDIT
       // this.publisherService.update(this.id, publisher).subscribe();
       // PRACTICA COMUN, NO IDEAL
-      this.publisherService.update(this.id, publisher).subscribe(() => {
-        this.publisherService.findAll().subscribe((data) => {
+      this.publisherService.update(this.id, publisher).subscribe( ()=>{
+        this.publisherService.findAll().subscribe( data => {
           this.publisherService.setPublisherChange(data);
-          this.publisherService.setMessageChange('UPDATED!');
+          this.publisherService.setMessageChange('Publisher UPDATED!')
         });
       });
       // this.router.navigate(['pages/publisher']);
-    } else {
-      //SAVE
+    }else{
+      // SAVE
       // this.publisherService.save(publisher).subscribe();
-      // PRACTICA IDEAL
-      this.publisherService
-        .save(publisher)
-        .pipe(switchMap(() => this.publisherService.findAll()))
-        .subscribe((data) => {
-          this.publisherService.setPublisherChange(data);
-          this.publisherService.setMessageChange('CREATED!');
+      // PRACTICA RECOMENDADA(IDEAL)
+      this.publisherService.save(publisher)
+        .pipe(switchMap(()=> this.publisherService.findAll()))
+        .subscribe(data => {
+          this.publisherService.setPublisherChange(data)
+          this.publisherService.setMessageChange('Publisher CREATED!')
         });
-      
       // this.router.navigate(['pages/publisher']);
     }
-
     this.router.navigate(['pages/publisher']);
   }
 }
