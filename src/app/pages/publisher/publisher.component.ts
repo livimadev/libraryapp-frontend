@@ -43,6 +43,8 @@ export class PublisherComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  totalElements: number = 0;
+
   constructor(
     private publisherService: PublisherService,
     private _snackBar: MatSnackBar
@@ -52,8 +54,13 @@ export class PublisherComponent {
   ngOnInit():void{
     // this.publisherService.findAll().subscribe(data => console.log(data));
     // this.publisherService.findAll().subscribe(data => this.publishers = data);
-    this.publisherService.findAll().subscribe(data => {
-      this.createTable(data);
+    // this.publisherService.findAll().subscribe(data => {
+    //   this.createTable(data);
+    // });
+
+    this.publisherService.listPageable(0, 10).subscribe(data => {
+      this.createTable(data.content);
+      this.totalElements = data.totalElements
     });
 
     this.publisherService.getPublisherChange().subscribe(data => this.createTable(data));
@@ -71,7 +78,7 @@ export class PublisherComponent {
   // Método de creación de la tabla
   createTable(data){
     this.dataSource = new MatTableDataSource(data);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -94,4 +101,12 @@ export class PublisherComponent {
         this.publisherService.setMessageChange('Publisher DELETED!')
       })
   }
+
+  showMore(e: any){
+    this.publisherService.listPageable(e.pageIndex, e.pageSize).subscribe(data => {
+      this.createTable(data.content)
+      this.totalElements = data.totalElements;
+    });
+  }
+
 }

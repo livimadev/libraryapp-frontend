@@ -20,6 +20,10 @@ export class PublisherService extends GenericService<Publisher> {
     );
   }
 
+  listPageable(p: number, s: number){
+    return this.http.get<any>(`${environment.HOST}/publishers/pageable?page=${p}&size=${s}`);
+  }
+
   //constructor(private http: HttpClient) { }
 
   /*findAll(){

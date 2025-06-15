@@ -53,7 +53,7 @@
       </tr>-->
     </table>
   
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Seleccionar página de editoriales"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="totalElements" (page)="showMore($event)" aria-label="Seleccionar página de editoriales"></mat-paginator>
 
   </div>
   <button mat-fab style="float: right;" routerLink="/pages/publisher/new">

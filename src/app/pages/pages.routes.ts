@@ -3,8 +3,10 @@ import { CategoryComponent } from "./category/category.component";
 import { PublisherComponent } from "./publisher/publisher.component";
 import { PublisherEditComponent } from "./publisher/publisher-edit/publisher-edit.component";
 import { AuthorComponent } from "./author/author.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 
 export const pagesRoutes: Routes = [
+    { path: 'dashboard', component: DashboardComponent},
     {
         path: 'publisher', component: PublisherComponent,
         children: [
