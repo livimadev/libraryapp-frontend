@@ -85,20 +85,20 @@ export class AuthorComponent {
   }
 
   // Metodo para elimar
-    delete(id: number){
-      this.authorService.delete(id)
-        .pipe(switchMap(() => this.authorService.findAll()))
-        .subscribe( data => {
-          this.authorService.setAuthorChange(data);
-          this.authorService.setMessageChange('Author DELETED!')
-        })
-    }
+  delete(id: number) {
+    this.authorService.delete(id)
+      .pipe(switchMap(() => this.authorService.findAll()))
+      .subscribe(data => {
+        this.authorService.setAuthorChange(data);
+        this.authorService.setMessageChange('Author DELETED!')
+      })
+  }
 
-    // Metodo para abrir el modal
-    openDialog(author?: Author){
-      this._dialog.open(AuthorDialogComponent,{
-        width: '750px',
-        data: author
-      });
-    }
+  // Metodo para abrir el modal
+  openDialog(author?: Author) {
+    this._dialog.open(AuthorDialogComponent, {
+      width: '750px',
+      data: author
+    });
+  }
 }

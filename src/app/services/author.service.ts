@@ -16,22 +16,22 @@ export class AuthorService extends GenericService<Author> {
       inject(HttpClient),
       `${environment.HOST}/authors`
     );
-   }
+  }
 
-   ///////////////////////////////////
-     setAuthorChange(data: Author[]){
-       this.authorChange.next(data);
-     }
-   
-     getAuthorChange(){
-       return this.authorChange.asObservable();
-     }
-   
-     setMessageChange(data: string){
-       this.messageChange.next(data);
-     }
-   
-     getMessageChange(){
-       return this.messageChange.asObservable();
-     }
+  ///////////////////////////////////
+  setAuthorChange(data: Author[]) {
+    this.authorChange.next(data);
+  }
+
+  getAuthorChange() {
+    return this.authorChange.asObservable();
+  }
+
+  setMessageChange(data: string) {
+    this.messageChange.next(data);
+  }
+
+  getMessageChange() {
+    return this.messageChange.asObservable();
+  }
 }

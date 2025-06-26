@@ -4,6 +4,7 @@ import { PublisherComponent } from "./publisher/publisher.component";
 import { PublisherEditComponent } from "./publisher/publisher-edit/publisher-edit.component";
 import { AuthorComponent } from "./author/author.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { BookComponent } from "./book/book.component";
 
 export const pagesRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent},
@@ -16,4 +17,5 @@ export const pagesRoutes: Routes = [
     },
     { path: 'author', component: AuthorComponent }, // pages/author
     { path: 'category', component: CategoryComponent },
+    { path: 'book', component: BookComponent },
 ]

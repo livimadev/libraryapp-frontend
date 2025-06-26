@@ -1,0 +1,42 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Book Info</span></mat-toolbar>
+
+  <div class="example-container">
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="book.idCategory">
+        @for (c of categories; track c) {
+        <mat-option [value]="c.idCategory">{{ c.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Publisher</mat-label>
+      <mat-select [(ngModel)]="book.idPublisher">
+        @for (p of publishers; track p) {
+        <mat-option [value]="p.idPublisher">{{ p.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Title" [(ngModel)]="book.titulo" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="SubTitle" [(ngModel)]="book.subtitulo" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Description"
+        [(ngModel)]="book.description"
+      />
+    </mat-form-field>
+
+    <button mat-button (click)="operate()">Done</button>
+    <button mat-button (click)="close()">Cancel</button>
+  </div>
+</mat-dialog-content>
